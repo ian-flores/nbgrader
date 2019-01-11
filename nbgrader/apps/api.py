@@ -861,13 +861,15 @@ class NbGraderAPI(LoggingConfigurable):
             app.create_assignment = create
             return capture_log(app)
 
-    def feedback(self, assignment_id, force=True, create=True):
+    def feedback(self, assignment_id, student_id, force=True, create=True):
         """Run ``nbgrader feedback`` for a particular assignment.
 
         Arguments
         ---------
         assignment_id: string
             The name of the assignment
+        student_id: string
+            The unique id of the student
         force: bool
             Whether to force creating the student version, even if it already
             exists.
@@ -885,7 +887,7 @@ class NbGraderAPI(LoggingConfigurable):
             - log (string): captured log output
 
         """
-        with temp_attrs(self.coursedir, assignment_id=assignment_id):
+        with temp_attrs(self.coursedir, assignment_id=assignment_id, student_id=student_id):
             app = Feedback(coursedir=self.coursedir, parent=self)
             app.force = force
             app.create_assignment = create

@@ -680,26 +680,26 @@ class TestNbGraderAPI(BaseTestApp):
 
     def test_feedback(self, api, course_dir, db):
         self._copy_file(
-            join("files", "autograded-unchanged.ipynb"), 
+            join("files", "submitted-unchanged.ipynb"),
             join(course_dir, "autograded", "foo", "ps1", "p1.ipynb")
         )
-        result = api.feedback("ps1")
+        result = api.feedback("ps1", "foo")
         assert result["success"]
         assert os.path.exists(join(course_dir, "feedback", "foo", "ps1", "p1.html"))
         assert filecmp.cmp(
-            join("files", "feedback-unchanged.html"), 
+            join("files", "feedback-unchanged.html"),
             join(course_dir, "feedback", "foo", "ps1", "p1.html")
         )
 
         self._copy_file(
-            join("files", "autograded-changed.ipynb"), 
+            join("files", "submitted-changed.ipynb"),
             join(course_dir, "autograded", "foo", "ps1", "p1.ipynb")
         )
         result = api.feedback("ps1")
         assert result["success"]
         assert os.path.exists(join(course_dir, "feedback", "foo", "ps1", "p1.html"))
         assert filecmp.cmp(
-            join("files", "feedback-changed.html"), 
+            join("files", "feedback-changed.html"),
             join(course_dir, "feedback", "foo", "ps1", "p1.html")
         )
 
